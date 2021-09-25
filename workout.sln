@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "workout", "workout.csproj", "{8F52B08E-347D-4B63-8F06-B1D0D7AB9BB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "workout", "workout.csproj", "{8F52B08E-347D-4B63-8F06-B1D0D7AB9BB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "workout.tests", "..\workout.tests\workout.tests.csproj", "{3525EBB8-4C02-40D2-A27B-AD8DDF568B79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{8F52B08E-347D-4B63-8F06-B1D0D7AB9BB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F52B08E-347D-4B63-8F06-B1D0D7AB9BB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F52B08E-347D-4B63-8F06-B1D0D7AB9BB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3525EBB8-4C02-40D2-A27B-AD8DDF568B79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3525EBB8-4C02-40D2-A27B-AD8DDF568B79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3525EBB8-4C02-40D2-A27B-AD8DDF568B79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3525EBB8-4C02-40D2-A27B-AD8DDF568B79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
