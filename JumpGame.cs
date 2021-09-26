@@ -8,26 +8,40 @@ namespace workout
     {
         public static bool CanJump(int[] nums)
         {
-            int length = nums.Length;
+            int length = nums.Length - 1;
+            int furthest = 0;
+            if (nums.Length == 1)
+            {
+                return true;
+            }
             for (int i = 0; i < length; i++)
             {
-                for (int j = i; j <= nums[i] && j < length; j++)
+                if (nums[i] == 0 && i == furthest)
                 {
-                    if ((nums[j] + j) >= length - 1)
-                    {
-                        if ((i == length - 1) && (j == length - 1))
-                        {
-                            if ((nums[j] + j == length))
-                            {
-                                return true;
-                            }
-                            return false;
-                        }
-                        return true;
-                    }
+                    return false;
+                }
+                furthest = Math.Max(nums[i] + i, furthest);
+                if (nums[i] + i >= length)
+                {
+                    return true;
                 }
             }
             return false;
+        }
+        public static int MinJumpAlt(int[] nums)
+        {
+            int x = 0, y = 0;
+            int ans = 0;
+            for (int i = 0; i < nums.Length - 1; i++)
+            {
+                y = Math.Max(y, i + nums[i]);
+                if (x == i)
+                {
+                    ans++;
+                    x = y;
+                }
+            }
+            return ans;
         }
     }
 }
