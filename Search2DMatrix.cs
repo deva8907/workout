@@ -6,7 +6,7 @@ namespace workout
 {
     public class Search2DMatrix
     {
-        public static bool SearchMatrix2(int[][] matrix, int target)
+        public static bool SearchMatrixTopDown(int[][] matrix, int target)
         {
             int i = 0;
             int j = matrix[i].Length - 1;
@@ -22,52 +22,27 @@ namespace workout
             }
             return false;
         }
-        public static bool SearchMatrix(int[][] matrix, int target)
+
+        public static bool SearchMatrixBottomUp(int[][] matrix, int target)
         {
-            int rows = matrix.Length;
-            int cols = matrix[0].Length;
-            if (target > matrix[rows - 1][cols - 1])
+            if (matrix == null)
             {
                 return false;
             }
-
-            int rowMax = 0, colMax = 0;
-            while (true)
+            int i = matrix.Length - 1, j = 0;
+            while (i >= 0 && j < matrix[0].Length)
             {
-                if (matrix[rowMax][colMax] == target)
+                if (matrix[i][j] == target)
                 {
                     return true;
                 }
-
-                rowMax = rowMax == rows - 1 ? rows - 1 : rowMax + 1;
-                colMax = colMax == cols - 1 ? cols - 1 : colMax + 1;
-                if (matrix[rowMax][colMax] == target)
+                if (matrix[i][j] > target)
                 {
-                    return true;
+                    i--;
                 }
-                if (matrix[rowMax][colMax] > target)
+                else if (matrix[i][j] < target)
                 {
-                    break;
-                }
-
-                if (rowMax == rows - 1 && colMax == cols - 1)
-                {
-                    break;
-                }
-            }
-            
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < cols; j++)
-                {
-                    if (i >= rowMax && j >= colMax)
-                    {
-                        break;
-                    }
-                    if (matrix[i][j] == target)
-                    {
-                        return true;
-                    } 
+                    j++;
                 }
             }
             return false;
