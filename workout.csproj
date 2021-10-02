@@ -5,4 +5,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="workout.tests\**" />
+    <EmbeddedResource Remove="workout.tests\**" />
+    <None Remove="workout.tests\**" />
+  </ItemGroup>
+
 </Project>
