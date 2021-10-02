@@ -6,7 +6,7 @@ namespace workout
 {
     public class MaxAreaIsland
     {
-        public static int MaxAreaOfIslandRecursive(int[][] grid)
+        public static int MaxAreaOfIsland(int[][] grid)
         {
             if (grid == null)
             {
@@ -17,10 +17,7 @@ namespace workout
             {
                 for (int j = 0; j < grid[i].Length; j++)
                 {
-                    if (grid[i][j] == 1)
-                    {
-                        maxCluster = Math.Max(DfsRecursive(grid, i, j), maxCluster);
-                    } 
+                    maxCluster = Math.Max(DfsIterative(grid, i, j), maxCluster);
                 }
             }
             return maxCluster;
@@ -35,10 +32,37 @@ namespace workout
             }
             grid[i][j] = 0;
             int result = 1;
-            return result + DFSAlt(grid, i - 1, j) +//top
-            DFSAlt(grid, i, j + 1) +//right
-            DFSAlt(grid, i + 1, j) +//bottom
-            DFSAlt(grid, i, j - 1);//left
+            return result + DfsRecursive(grid, i - 1, j) +//top
+            DfsRecursive(grid, i, j + 1) +//right
+            DfsRecursive(grid, i + 1, j) +//bottom
+            DfsRecursive(grid, i, j - 1);//left
+        }
+
+        private static int DfsIterative(int[][] grid, int i, int j)
+        {
+            if (grid[i][j] == 0)
+            {
+                return 0;
+            }
+            int result = 0;
+            Stack<Tuple<int, int>> elementStack = new Stack<Tuple<int, int>>();
+            elementStack.Push(new Tuple<int, int>(i, j));
+            while (elementStack.TryPop(out Tuple<int, int> popElement))
+            {
+                i = popElement.Item1;
+                j = popElement.Item2;
+                if ((i >= 0 && i < grid.Length && j >= 0 && j < grid[i].Length) &&
+                    grid[i][j] == 1)
+                {
+                    result += 1;
+                    grid[i][j] = 0;
+                    elementStack.Push(new Tuple<int, int>(i - 1, j));//top
+                    elementStack.Push(new Tuple<int, int>(i, j + 1));//right
+                    elementStack.Push(new Tuple<int, int>(i + 1, j));//bottom
+                    elementStack.Push(new Tuple<int, int>(i, j - 1));//left
+                }
+            }
+            return result;
         }
     }
 }
