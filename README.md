@@ -1,2 +1,2 @@
 # workout
-Solutions several famous data structures and algorithmic problems
+Workout space for solving data structure and algorithm questions
