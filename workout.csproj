@@ -11,4 +11,8 @@
     <None Remove="workout.tests\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="C5" Version="2.5.3" />
+  </ItemGroup>
+
 </Project>

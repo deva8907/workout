@@ -18,7 +18,8 @@ namespace workout.tests
         [ClassData(typeof(MergeSortedListTestData))]
         public void TestMergeLists(ListNode[] listNodes)
         {
-            new MergeSortedList().MergeKLists(listNodes);
+            //new MergeSortedList().MergeKLists(listNodes);
+            new MergeSortedList().MergeKListsWithIntervalHeap(listNodes);
         }
     }
 
@@ -33,9 +34,9 @@ namespace workout.tests
                 new int[]{ 2, 6}
             };
             ListNode[] listNode;
-            //listNode = ToListNode(input);
-            //yield return new object[] { listNode };
-            
+            listNode = ToListNode(input);
+            yield return new object[] { listNode };
+
             yield return new object[] { new ListNode[] { null, null } };
         }
 
