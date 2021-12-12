@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using workout.algo_expert;
 using Xunit;
 
 namespace workout.tests
@@ -20,6 +21,42 @@ namespace workout.tests
         public void TreePathNodeWorks(TreeNode root, int targetSum, List<List<int>> expected)
         {
             new TreePathSumNodes().PathSumRecursive(root, targetSum);
+        }
+        [Theory]
+        [MemberData(nameof(InvertBinaryTreeTestData))]
+        public void InvertingBSTWorks(BinaryTree tree)
+        {
+            InvertBinaryTree.Solve(tree);
+            InvertBinaryTree.SolveIteratively(tree);
+        }
+        public static IEnumerable<object[]> InvertBinaryTreeTestData
+        {
+            get
+            {
+                yield return new object[]
+                    {
+                        CreateBinaryTree(new int[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9}, null, 0)
+                    };
+            }
+        }
+        static BinaryTree CreateBinaryTree(int[] arr,
+                            BinaryTree root, int i)
+        {
+            // Base case for recursion
+            if (i < arr.Length)
+            {
+                BinaryTree temp = new BinaryTree(arr[i]);
+                root = temp;
+
+                // insert left child
+                root.left = CreateBinaryTree(arr,
+                                root.left, 2 * i + 1);
+
+                // insert right child
+                root.right = CreateBinaryTree(arr,
+                                root.right, 2 * i + 2);
+            }
+            return root;
         }
     }
 
@@ -92,6 +129,8 @@ namespace workout.tests
             }
             return treeNode;
         }
+
+        
     }
 
     public class TreePathTestData : IEnumerable<object[]>

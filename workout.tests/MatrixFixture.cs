@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using workout.algo_expert;
 using Xunit;
 
 namespace workout.tests
@@ -14,6 +15,29 @@ namespace workout.tests
         {
             var actual = Search2DMatrix.SearchMatrixBottomUp(matrix, target);
             Assert.Equal(expected, actual);
+        }
+        [Theory]
+        [MemberData(nameof(RiverSizeTestData))]
+        public void TestRiverSize(int[,] matrix)
+        {
+            RiverSize.Solve(matrix);
+        }
+        public static IEnumerable<object[]> RiverSizeTestData
+        {
+            get
+            {
+                yield return new object[]
+                    {
+                        new int[,]
+                        {
+                            { 1, 0,0,1,0 },
+                            { 1,0,1,0,0},
+                            { 0,0,1,0,1},
+                            { 1,0,1,0,1},
+                            { 1,0,1,1,0}
+                        }
+                    };
+            }
         }
         public class MatrixTestData : IEnumerable<object[]>
         {
