@@ -29,6 +29,14 @@ namespace workout.tests
             InvertBinaryTree.Solve(tree);
             InvertBinaryTree.SolveIteratively(tree);
         }
+
+        [Fact]
+        public void TreeLevelOrderTraversal()
+        {
+            //new TreeLevelOrderTraversal().LevelOrder(new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7))));
+            new TreeLevelOrderTraversal().LevelOrder(new TreeNode(1));
+            new TreeLevelOrderTraversal().LevelOrder(new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7))));
+        }
         public static IEnumerable<object[]> InvertBinaryTreeTestData
         {
             get
