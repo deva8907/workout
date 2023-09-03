@@ -37,6 +37,14 @@ namespace workout.tests
             //new TreeLevelOrderTraversal().LevelOrder(new TreeNode(1));
             //new TreeLevelOrderTraversal().LevelOrder(new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7))));
         }
+
+        [Fact]
+        public void TreePrintCousins()
+        {
+            new PrintCousins().Print(new TreeNode(1, new TreeNode(2, new TreeNode(4), new TreeNode(5)), new TreeNode(3, new TreeNode(6), new TreeNode(7))), 6);
+            //TreeNode target = new TreeNode(6);
+            //new PrintCousins().anotherOne(new TreeNode(1, new TreeNode(2, new TreeNode(4), new TreeNode(5)), new TreeNode(3, target, new TreeNode(7))), target);
+        }
         public static IEnumerable<object[]> InvertBinaryTreeTestData
         {
             get
