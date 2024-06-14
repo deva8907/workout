@@ -22,8 +22,8 @@ namespace workout
             {
                 for (int j = 0; j < data[i].Length; j++)
                 {
-                    var output = Traverse(data, i, j);
-                    if (output) result += 1;
+                    if (Traverse(data, i, j)) 
+                        result += 1;
                 }
             }
             return result;
@@ -35,7 +35,7 @@ namespace workout
             {
                 return false;
             }
-            Console.WriteLine($"debug log i: {i}, j: {j}");
+            
             data[i][j] = false;
             Traverse(data, i + 1, j);
             Traverse(data, i - 1, j);
