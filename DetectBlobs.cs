@@ -10,6 +10,11 @@ namespace workout
             for (int i = 0; i < message.Length; i++)
             {
                 data[i] = new bool[message[i].Length];
+                var chars = message[i].ToCharArray();
+                for (int j = 0; j < chars.Length; j++)
+                {
+                    data[i][j] = chars[j] != '0';
+                }
             }
 
             int result = 0;
@@ -26,18 +31,16 @@ namespace workout
 
         private static bool Traverse(bool[][] data, int i, int j)
         {
-            if (i < 0 || i >= data.Length || j < 0 || j >= data[i].Length)
+            if (i < 0 || i >= data.Length || j < 0 || j >= data[i].Length || !data[i][j])
             {
                 return false;
             }
-
+            Console.WriteLine($"debug log i: {i}, j: {j}");
+            data[i][j] = false;
             Traverse(data, i + 1, j);
             Traverse(data, i - 1, j);
             Traverse(data, i, j + 1);
             Traverse(data, i, j - 1);
-
-            data[i][j] = true;
-
             return true;
         }
     }
