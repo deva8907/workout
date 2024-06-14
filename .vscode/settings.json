@@ -1,0 +1,7 @@
+{
+	"dotnet-test-explorer.treeMode": "flat",
+	"dotnet-test-explorer.testProjectPath": "workout.tests/",
+	"dotnetAcquisitionExtension.existingDotnetPath": [
+        {"extensionId": "msazurermtools.azurerm-vscode-tools", "path": "/usr/local/share/dotnet/dotnet"}
+    ]
+}
