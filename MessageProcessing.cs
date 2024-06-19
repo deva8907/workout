@@ -8,7 +8,10 @@ namespace workout
     {
         static void Main()
         {
-            new Service1().Process();
+            var orderProcessorFactory = new OrderProcessorFactory();
+            orderProcessorFactory.AddProcessor("Order", new ProcessOrder(new DiscountService(), new OrderRepository()));
+            orderProcessorFactory.AddProcessor("Cancellation", new CancelOrder(new OrderRepository()));
+            new MessageProcessingService(new Retriever(), orderProcessorFactory).Process();
         }
     }
     class MessagePayload
@@ -23,7 +26,86 @@ namespace workout
         public string Name { get; set; }
         public string StateAbbreviation { get; set; }
     }
-    class Retriever
+    interface IMessageRetriver
+    {
+        List<MessagePayload> GetMessages();
+    }
+    interface IDiscountService
+    {
+        decimal GetDiscount(MessagePayload messagePayload);
+    }
+    interface IOrderRepository
+    {
+        void AddOrder(MessagePayload messagePayload, decimal discount);
+        void CancelOrder(MessagePayload messagePayload, int orderId);
+    }
+    interface IOrderProcessor
+    {
+        void Process(MessagePayload messagePayload);
+    }
+    class ProcessOrder(IDiscountService discountService, IOrderRepository orderRepository) : IOrderProcessor
+    {
+        private readonly IDiscountService _discountService = discountService;
+        private readonly IOrderRepository _orderRepository = orderRepository;
+
+        public void Process(MessagePayload messagePayload)
+        {
+            decimal discount = _discountService.GetDiscount(messagePayload);
+            _orderRepository.AddOrder(messagePayload, discount);
+        }
+    }
+    class CancelOrder(IOrderRepository orderRepository) : IOrderProcessor
+    {
+        private readonly IOrderRepository _orderRepository = orderRepository;
+
+        public void Process(MessagePayload messagePayload)
+        {
+            _orderRepository.CancelOrder(messagePayload, messagePayload.OrderId);
+        }
+    }
+    class OrderProcessorFactory
+    {
+        private Dictionary<string, IOrderProcessor> _processors = new Dictionary<string, IOrderProcessor>();
+        public void AddProcessor(string messageType, IOrderProcessor orderProcessor)
+        {
+            _processors.Add(messageType, orderProcessor);
+        }
+
+        public IOrderProcessor GetProcessor(string messageType)
+        {
+            return _processors.ContainsKey(messageType) ? _processors[messageType] : throw new KeyNotFoundException("processor not found");
+        }
+    }
+    class OrderRepository : IOrderRepository
+    {
+        public void AddOrder(MessagePayload messagePayload, decimal discount)
+        {
+            //suggest to use EF core or some ORM for better isolated unit testing and separation of concerns
+            //suggest that the previous implementation has sql injection vulnerability
+        }
+
+        public void CancelOrder(MessagePayload messagePayload, int orderId)
+        {
+            //suggest to use EF core or some ORM for better isolated unit testing and separation of concerns
+            //suggest that the previous implementation has sql injection vulnerability
+        }
+    }
+    class DiscountService : IDiscountService
+    {
+        private readonly Dictionary<string, decimal> _discounts;
+        public DiscountService()
+        {
+            _discounts.Add("CA", 5);
+            _discounts.Add("MI", 6);
+        }
+        public decimal GetDiscount(MessagePayload messagePayload)
+        {
+            if (_discounts.ContainsKey(messagePayload.Client.StateAbbreviation))
+                return _discounts[messagePayload.Client.StateAbbreviation];
+            return 0;
+        }
+    }
+    class Retriever : IMessageRetriver
     {
         public List<MessagePayload> GetMessages()
         {
@@ -42,56 +124,19 @@ namespace workout
             return result;
         }
     }
-    class Service1
+    class MessageProcessingService(IMessageRetriver retriver, OrderProcessorFactory orderProcessorFactory)
     {
+        private readonly IMessageRetriver _retriever = retriver;
+        private readonly OrderProcessorFactory _orderProcessorFactory = orderProcessorFactory;
+
         public void Process()
         {
-            Retriever retriever = new Retriever();
-            var messages = retriever.GetMessages();
+            var messages = _retriever.GetMessages();
             foreach (var message in messages)
             {
-                decimal discount = 0;
-                if (message.MessageType == "Order")
-                {
-                    if (message.Client.StateAbbreviation == "CA")
-                    {
-                        discount = 5;
-                    }
-                    else if (message.Client.StateAbbreviation == "MI")
-                    {
-                        discount = 6;
-                    }
-                    else
-                    {
-                        discount = 0;
-                    }
-
-                    PlaceOrder(message.MessageType, message.Client, discount);
-                }
-                if (message.MessageType == "Cancellation")
-                {
-                    CancelOrder(message.OrderId, message.MessageType);
-                }
+                var processor = _orderProcessorFactory.GetProcessor(message.MessageType);
+                processor.Process(message);
             }
-        }
-
-        private void CancelOrder(int orderId, string messageType)
-        {
-            string query = $"UPDATE Order SET Status = {messageType} WHERE OrderId = {orderId}";
-            RunSql(query);
-        }
-
-        private void PlaceOrder(string messageType, Client client, decimal discount)
-        {
-            string query = $"INSERT INTO Order(ClientId, ClientName, Discount, Status) VALUES({client.Id}, {client.Name}, {discount}, {messageType})";
-            RunSql(query);
-        }
-
-
-
-        private void RunSql(string query)
-        {
-            //method to run sql commands
         }
     }
 }
