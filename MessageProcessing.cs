@@ -1,11 +1,16 @@
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Text.Json;
 
 namespace workout
 {
+    class ProgramStart
+    {
+        static void Main()
+        {
+            new Service1().Process();
+        }
+    }
     class MessagePayload
     {
         public int OrderId { get; set; }
@@ -37,7 +42,7 @@ namespace workout
             return result;
         }
     }
-    class MessageProcessing
+    class Service1
     {
         public void Process()
         {
@@ -72,7 +77,7 @@ namespace workout
 
         private void CancelOrder(int orderId, string messageType)
         {
-            string query = $"UPDATE Order SET Status = {messageType} WHERE OrderId = {orderID}";
+            string query = $"UPDATE Order SET Status = {messageType} WHERE OrderId = {orderId}";
             RunSql(query);
         }
 
