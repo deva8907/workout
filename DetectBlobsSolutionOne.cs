@@ -2,7 +2,7 @@ using System;
 
 namespace workout
 {
-    public class DetectBlobs
+    public class DetectBlobsSolutionOne
     {
         public static int Solution(string[] message, int maxCount)
         {

@@ -6,7 +6,7 @@ namespace workout
 {
     class ProgramStart
     {
-        static void Main()
+        public void Process()
         {
             var orderProcessorFactory = new OrderProcessorFactory();
             orderProcessorFactory.AddProcessor("Order", new ProcessOrder(new DiscountService(), new OrderRepository()));
@@ -65,7 +65,7 @@ namespace workout
     }
     class OrderProcessorFactory
     {
-        private Dictionary<string, IOrderProcessor> _processors = new Dictionary<string, IOrderProcessor>();
+        private Dictionary<string, IOrderProcessor> _processors = [];
         public void AddProcessor(string messageType, IOrderProcessor orderProcessor)
         {
             _processors.Add(messageType, orderProcessor);
@@ -92,7 +92,7 @@ namespace workout
     }
     class DiscountService : IDiscountService
     {
-        private readonly Dictionary<string, decimal> _discounts;
+        private readonly Dictionary<string, decimal> _discounts = [];
         public DiscountService()
         {
             _discounts.Add("CA", 5);
@@ -100,8 +100,8 @@ namespace workout
         }
         public decimal GetDiscount(MessagePayload messagePayload)
         {
-            if (_discounts.ContainsKey(messagePayload.Client.StateAbbreviation))
-                return _discounts[messagePayload.Client.StateAbbreviation];
+            if (_discounts.TryGetValue(messagePayload.Client.StateAbbreviation, out decimal value))
+                return value;
             return 0;
         }
     }
@@ -109,12 +109,12 @@ namespace workout
     {
         public List<MessagePayload> GetMessages()
         {
-            List<string> filePaths = new List<string>()
-            {
+            List<string> filePaths =
+            [
                 "file1.json",
                 "file2.json",
                 "file3.json"
-            };
+            ];
             var result = new List<MessagePayload>();
             foreach (var path in filePaths)
             {
